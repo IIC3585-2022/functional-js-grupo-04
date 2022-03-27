@@ -17,20 +17,12 @@ const moveValue = (move) => {
   return move === 'SB' ? 25 : 50;
 };
 
-const pointsCalculator = (totalPts, movePts) => {
-  const newScore = totalPts - movePts;
-  return newScore < 0 ? -newScore : newScore;
-};
-
 const insertMoves = (player, moves) => {
   const mapMovesToValues = moves.map((move) => moveValue(move));
   let currentScore = player.points;
-  mapMovesToValues.map((move) => {
-    currentScore = pointsCalculator(currentScore, move);
-    if (currentScore === 0) {
-      return 0;
-    }
-    return currentScore;
+  mapMovesToValues.some((move) => {
+    currentScore = Math.abs(currentScore - move);
+    return currentScore === 0;
   });
   return currentScore;
 };
@@ -41,3 +33,5 @@ const playGame = (...args) => {
 };
 
 playGame('Pepe', 'Lucía', 'María');
+
+console.log(insertMoves({ name: 'Felipe', points: 100 }, [[1, 50], [2, 15], [3, 15]]));
