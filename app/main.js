@@ -23,7 +23,6 @@ const applyMove = (score, move) => (score === 0 ? 0 : Math.abs(score - move));
 const insertMoves = (player, moves) => {
   const mapMovesToValues = moves.map((move) => moveValue(move));
   const currentScore = player.points;
-  console.log(currentScore);
   const finalValue = mapMovesToValues.reduce((score, move) => applyMove(score, move), currentScore);
   return finalValue;
 };
@@ -45,18 +44,24 @@ const currentPointsMessage = (currentPoints, player) => (currentPoints === 0 ? `
 
 const playTurn = _.flowRight([parseMessage, promptMessage]);
 
+const makeTurn = (players) => {
+  if (_.some(players, { points: 0 })) {
+    return;
+  }
+  const newPlayers = players.map((player) => {
+    console.log(playerLog(player));
+    const move = playTurn();
+    const currentPoints = insertMoves(player, move);
+    console.log(currentPointsMessage(currentPoints, player));
+    return { name: player.name, points: currentPoints };
+  });
+  makeTurn(newPlayers);
+};
+
 const playGame = (...args) => {
   const players = initGame(...args);
   console.log(welcomeLog(players));
-  while (!_.some(players, { points: 0 })) {
-    players.map((player) => {
-      console.log(playerLog(player));
-      const move = playTurn();
-      const currentPoints = insertMoves(player, move);
-      console.log(currentPointsMessage(currentPoints, player));
-      return { name: player.name, points: currentPoints };
-    });
-  }
+  makeTurn(players);
 };
 
 playGame('Pepe', 'Lucía', 'María');
