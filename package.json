@@ -22,6 +22,7 @@
     "eslint-plugin-import": "^2.25.4"
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "prompt-sync": "^4.2.0"
   }
 }
