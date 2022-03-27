@@ -23,7 +23,6 @@ const applyMove = (score, move) => (score === 0 ? 0 : Math.abs(score - move));
 const insertMoves = (player, moves) => {
   const mapMovesToValues = moves.map((move) => moveValue(move));
   const currentScore = player.points;
-  console.log(currentScore);
   const finalValue = mapMovesToValues.reduce((score, move) => applyMove(score, move), currentScore);
   return finalValue;
 };
