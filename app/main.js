@@ -31,16 +31,14 @@ const playerLog = (player) => `Ingrese lanzamientos de ${player.name}: `;
 
 const promptMessage = () => {
   const playerGame = prompt('> ');
-  const cleanPlayerGame = playerGame.replace(/'/g, '"');
-  return cleanPlayerGame;
+  return playerGame.replace(/'/g, '"');
 };
 
-const parseMessage = (message) => {
-  const parsedArray = JSON.parse(message);
-  return parsedArray;
-};
+const parseMessage = (message) => JSON.parse(message);
 
-const currentPointsMessage = (currentPoints, player) => (currentPoints === 0 ? `${player.name} queda con 0 puntos y gana el juego. Felicitaciones ${player.name} !!` : `${player.name} queda con ${currentPoints}`);
+const currentPointsMessage = (currentPoints, player) => (currentPoints === 0
+  ? `${player.name} queda con 0 puntos y gana el juego. Felicitaciones ${player.name} !!`
+  : `${player.name} queda con ${currentPoints}`);
 
 const playTurn = _.flowRight([parseMessage, promptMessage]);
 
