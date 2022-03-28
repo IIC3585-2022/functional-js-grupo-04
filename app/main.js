@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const prompt = require('prompt-sync')({ sigint: true });
 
 const initGame = (...args) => args.map((name) => ({ name, points: 501 }));
 
@@ -26,11 +27,42 @@ const insertMoves = (player, moves) => {
   return finalValue;
 };
 
+const playerLog = (player) => `Ingrese lanzamientos de ${player.name}: `;
+
+const promptMessage = () => {
+  const playerGame = prompt('> ');
+  return playerGame.replace(/'/g, '"');
+};
+
+const parseMessage = (message) => JSON.parse(message);
+
+const currentPointsMessage = (currentPoints, player) => (currentPoints === 0
+  ? `${player.name} queda con 0 puntos y gana el juego. Felicitaciones ${player.name} !!`
+  : `${player.name} queda con ${currentPoints}`);
+
+const playTurn = _.flowRight([parseMessage, promptMessage]);
+
+const makeTurn = (players) => {
+  if (_.some(players, { points: 0 })) {
+    return;
+  }
+  let gameEnded = false;
+  const newPlayers = players.map((player) => {
+    if (gameEnded) return player;
+    console.log(playerLog(player));
+    const move = playTurn();
+    const currentPoints = insertMoves(player, move);
+    gameEnded = currentPoints === 0;
+    console.log(currentPointsMessage(currentPoints, player));
+    return { name: player.name, points: currentPoints };
+  });
+  makeTurn(newPlayers);
+};
+
 const playGame = (...args) => {
   const players = initGame(...args);
   console.log(welcomeLog(players));
+  makeTurn(players);
 };
 
 playGame('Pepe', 'Lucía', 'María');
-
-console.log(insertMoves({ name: 'Felipe', points: 100 }, [[1, 20], [2, 15], [3, 15]]));
