@@ -46,10 +46,15 @@ const makeTurn = (players) => {
   if (_.some(players, { points: 0 })) {
     return;
   }
+  let gameEnded = false;
   const newPlayers = players.map((player) => {
+    if (gameEnded) {
+      return player;
+    }
     console.log(playerLog(player));
     const move = playTurn();
     const currentPoints = insertMoves(player, move);
+    gameEnded = currentPoints === 0;
     console.log(currentPointsMessage(currentPoints, player));
     return { name: player.name, points: currentPoints };
   });
