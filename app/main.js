@@ -48,9 +48,7 @@ const makeTurn = (players) => {
   }
   let gameEnded = false;
   const newPlayers = players.map((player) => {
-    if (gameEnded) {
-      return player;
-    }
+    if (gameEnded) return player;
     console.log(playerLog(player));
     const move = playTurn();
     const currentPoints = insertMoves(player, move);
